@@ -9,13 +9,8 @@ export TSAN_OPTIONS="suppressions=`pwd`/tsan"
 RUST_BACKTRACE=1 RUSTFLAGS="-Z sanitizer=thread" cargo test
 ```
 
-To make the error go away, downgrade getrandom crate:
-
-``` bash
-cargo update -p getrandom --precise 0.1.6
-```
-
-Or this can be added to the suppressions file, but so far seems under-specific:
+If this is a false positive, this can be added to the suppressions file, but so
+far seems under-specific:
 
 ``` txt
 # See https://github.com/dekellum/rng-tsan-min-repro
