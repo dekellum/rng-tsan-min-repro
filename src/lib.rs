@@ -9,8 +9,10 @@ mod tests {
 
     #[test]
     fn hammer() {
-        let threads: Vec<_> = (0..100).map(|i| thread::spawn(move || {
-            let mut rng = Pcg32::seed_from_u64(i);
+        let threads: Vec<_> = (0..100).map(|_| thread::spawn(move || {
+            let mut seed = <Pcg32 as SeedableRng>::Seed::default();
+            getrandom::getrandom(&mut seed).unwrap();
+            let mut rng = Pcg32::from_seed(seed);
             let ms = rng.next_u64() % 10 as u64 + 3;
             thread::sleep(Duration::from_millis(ms));
         })).collect();
