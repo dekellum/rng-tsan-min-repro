@@ -11,16 +11,15 @@ mod tests {
     use std::thread;
     use std::time::Duration;
 
-    lazy_static! {
-        static ref RND_STATE: RandomState = RandomState::new();
-    }
-
     #[test]
     fn hammer() {
+        lazy_static! {
+            static ref RND_STATE: RandomState = RandomState::new();
+        }
 
-        let threads: Vec<_> = (0..100).map(|i| thread::spawn(move || {
+        let threads: Vec<_> = (0..100).map(|_| thread::spawn(|| {
             let mut hasher = RND_STATE.build_hasher();
-            i.hash(&mut hasher);
+            thread::current().id().hash(&mut hasher);
             let hash: u64 = hasher.finish();
             let mut rng = Pcg32::seed_from_u64(hash);
             let ms = rng.next_u64() % 10 as u64 + 3;
