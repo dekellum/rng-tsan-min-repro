@@ -1,7 +1,6 @@
 # rng-tsan-min-repro
 
-Minimized reproduction of a thread sanitizer issue involving c2-chacha
-(via rand_chacha).
+Minimized reproductions of a thread sanitizer issues (see various branches)
 
 Steps to reproduce with (rust/LLVM) thread sanitizer:
 
