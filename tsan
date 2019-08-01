@@ -1,3 +1,13 @@
+# TSAN does not understand fences and `Arc::drop` is implemented using a fence.
+# This causes many false positives.
+race:Arc*drop
+race:Weak*drop
+
 # This ignores a false positive caused by `thread::park()`/`thread::unpark()`.
 # See: https://github.com/rust-lang/rust/pull/54806#issuecomment-436193353
 race:pthread_cond_destroy
+
+# Suppress various racy bits where they occur. lazy_static is a common culprit
+race:lazy_static::lazy::Lazy<T>::get
+race:c2_chacha::guts
+race:rand_core::SeedableRng::seed_from_u64
